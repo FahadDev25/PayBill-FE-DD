@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# PayBill – Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+PayBill is a bill-payment web application. This repository contains the React single-page app that lets a user register a utility bill (e.g. LESCO, MEPCO), track its history, view payment plans, and pay it — talking to a separate PayBill backend API.
 
-## Available Scripts
+Built with [Create React App](https://github.com/facebook/create-react-app).
+
+## Tech Stack
+
+- **React 18** with **React Router v6** for routing
+- **Axios** for HTTP requests to the backend API
+- **React Toastify** for toast notifications
+- Bootstrap-based admin/dashboard theme (bundled under `src/App/assets` and `src/assets`), plus jQuery-driven plugins (DataTables, Select2, SweetAlert2, ApexCharts, etc.) for the dashboard UI
+
+## Project Structure
+
+```
+src/
+├── App.js                 # Route definitions and top-level layout switch
+├── axios.js                # Axios instance + API base URL + auth header
+├── base_paths.js           # Base URL used for image/asset links
+├── routes/
+│   ├── index.js             # Public and auth-protected route lists
+│   └── AuthRoute.js         # ProtectedRoute / PublicRoute guards (token-based)
+├── container/
+│   ├── vertical-layout/     # Authenticated app shell (Header, Sidebar, Footer)
+│   └── noAuth-layout/       # Public site shell (Header, Nav, Footer)
+├── pages/
+│   ├── noauth-layout/       # Home, Login
+│   └── vertical-layout/     # Dashboard, bill-detail, bill-history, payment, plan
+├── common/                  # Shared layout image/CSS import helpers
+├── helpers/                 # Shared utility functions (e.g. toast helpers)
+├── Components/               # Reusable UI components
+└── assets/, App/assets/      # Images, fonts, CSS, and third-party JS plugins
+```
+
+## Routing & Auth
+
+Routes are split into two groups (`src/routes/index.js`):
+
+- **Public routes** (`/`, `/login`) — wrapped in `PublicRoute`, which redirects to `/dashboard` if a token is already present.
+- **Protected routes** (`/dashboard`, `/bill-details`, `/bill-details/add`, `/bill-history`, `/payments`, `/plans`) — wrapped in `ProtectedRoute`, which redirects to `/login` if no token is present.
+
+Authentication state is a JWT stored in `localStorage` under the `token` key. `src/axios.js` attaches it to every request as a `Bearer` token.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Configure the API endpoint
+
+The backend API base URL and asset host are currently hardcoded in:
+
+- `src/axios.js` — `axios.defaults.baseURL`
+- `src/base_paths.js` — `image` base path
+
+Update these to point at your backend instance before running the app.
+
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+#### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs the app in development mode at [http://localhost:3000](http://localhost:3000). The page reloads on changes.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### `npm test`
 
-### `npm test`
+Launches the test runner in interactive watch mode.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### `npm run build`
 
-### `npm run build`
+Builds the app for production to the `build` folder, minified and ready to deploy.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### `npm run eject`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Ejects the Create React App build configuration. This is a one-way operation.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Key Features
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Home / Login** — public marketing page and authentication
+- **Dashboard** — landing page after login
+- **Bill Details** — add and view registered utility bills (`/bill-details`, `/bill-details/add`)
+- **Bill History** — view past bill records (`/bill-history`)
+- **Payments** — make/view payments (`/payments`)
+- **Plans** — view available payment plans (`/plans`)
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)
+- [React documentation](https://reactjs.org/)
